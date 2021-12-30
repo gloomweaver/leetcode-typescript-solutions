@@ -14,7 +14,7 @@ class ListNode {
 type Maybe<T> = T | null;
 type List = Maybe<ListNode>;
 
-export function listToArray(list: List) {
+export function listToArray(list: List): number[] {
   if (list === null) return [];
   const result: number[] = [];
   let cur: List = list;
@@ -25,7 +25,7 @@ export function listToArray(list: List) {
   return result;
 }
 
-export function arrayToList(array: number[]) {
+export function arrayToList(array: number[]): List {
   if (array === []) return null;
   let head: List = null;
   let cur: List = null;
@@ -42,43 +42,31 @@ export function arrayToList(array: number[]) {
 }
 
 export function addTwoNumbers(l1: List, l2: List): List {
-  function sum(
-    pointers: List[],
-    result: List = null,
-    head: List = null,
-    carry = false
-  ): List {
-    if (pointers.length === 0) {
-      if (carry && result !== null) {
-        result.next = new ListNode(1);
-      }
-      return head;
-    }
-    while (pointers.every((pointer) => !!pointer)) {
-      const sum = pointers.reduce(
-        (acc, pointer) => acc + (pointer?.val ?? 0),
-        carry ? 1 : 0
-      );
-      const val = sum % 10;
-      if (result === null) {
-        result = new ListNode(val);
-        head = result;
-      } else {
-        result.next = new ListNode(val);
-        result = result.next;
-      }
-      carry = !!Math.floor(sum / 10);
-      pointers = pointers.map((pointer) => pointer?.next ?? null);
-    }
-    return sum(
-      pointers.filter((pointer) => !!pointer),
-      result,
-      head,
-      carry
+  let pointers: List[] = [l1, l2];
+  let carry = false;
+  let result: List = null;
+  let head: List = null;
+
+  while (pointers.some((pointer) => !!pointer)) {
+    const sum: number = pointers.reduce(
+      (acc, pointer) => acc + (pointer?.val ?? 0),
+      carry ? 1 : 0
     );
+    const val = sum % 10;
+    if (result === null) {
+      result = new ListNode(val);
+      head = result;
+    } else {
+      result.next = new ListNode(val);
+      result = result.next;
+    }
+    carry = !!Math.floor(sum / 10);
+    pointers = pointers.map((pointer) => pointer?.next ?? null);
   }
 
-  const head = sum([l1, l2]);
+  if (carry && result !== null) {
+    result.next = new ListNode(1);
+  }
 
   return head;
 }
