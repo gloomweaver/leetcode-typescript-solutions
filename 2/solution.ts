@@ -43,16 +43,17 @@ export function arrayToList(array: number[]): List {
 
 export function addTwoNumbers(l1: List, l2: List): List {
   let pointers: List[] = [l1, l2];
-  let carry = false;
+  let carry = 0;
   let result: List = null;
   let head: List = null;
 
   while (pointers.some((pointer) => !!pointer)) {
     const sum: number = pointers.reduce(
       (acc, pointer) => acc + (pointer?.val ?? 0),
-      carry ? 1 : 0
+      carry
     );
     const val = sum % 10;
+    carry = Math.floor(sum / 10);
     if (result === null) {
       result = new ListNode(val);
       head = result;
@@ -60,12 +61,11 @@ export function addTwoNumbers(l1: List, l2: List): List {
       result.next = new ListNode(val);
       result = result.next;
     }
-    carry = !!Math.floor(sum / 10);
     pointers = pointers.map((pointer) => pointer?.next ?? null);
   }
 
   if (carry && result !== null) {
-    result.next = new ListNode(1);
+    result.next = new ListNode(carry);
   }
 
   return head;
