@@ -8,6 +8,7 @@ const dict: Record<string, number> = {
   M: 1000,
 };
 
+// deno-lint-ignore no-unused-vars
 function romanToInt(s: string): number {
   return s.split("").reduce((calc, cur, index, array) => {
     if (dict[cur] < dict[array[index + 1]]) return calc - dict[cur];
