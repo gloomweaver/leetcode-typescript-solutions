@@ -10,15 +10,15 @@ function commonPrefix(str1: string, str2: string): string {
       return str1.slice(0, minLength);
     }
   }
-  return '';
+  return "";
 }
 
 // deno-lint-ignore no-unused-vars
 function longestCommonPrefix(strs: string[]): string {
-  let acc = strs[0] ?? '';
+  let acc = strs[0] ?? "";
   for (let idx = 1; idx < strs.length; idx++) {
     acc = commonPrefix(acc, strs[idx]);
-    if (!acc) return '';
+    if (!acc) return "";
   }
   return acc;
 }
